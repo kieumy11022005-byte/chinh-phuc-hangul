@@ -1,0 +1,1981 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🚀 Phiếu Thử Thách Chinh Phục Hangul</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Be Vietnam Pro & Noto Sans KR -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,500&family=Noto+Sans+KR:wght@500;700;900&display=swap" rel="stylesheet" />
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Be Vietnam Pro"', '"Noto Sans KR"', 'sans-serif'],
+            kr: ['"Noto Sans KR"', '"Be Vietnam Pro"', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              indigo: '#4F46E5',
+              violet: '#7C3AED',
+              coral: '#F43F5E',
+              mint: '#10B981',
+              sunny: '#F59E0B',
+            }
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    body {
+      font-family: 'Be Vietnam Pro', 'Noto Sans KR', sans-serif;
+      background-color: #F4F6FF;
+      background-image:
+        radial-gradient(at 0% 0%, rgba(124, 58, 237, 0.12) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(244, 63, 94, 0.10) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(16, 185, 129, 0.10) 0px, transparent 50%);
+      background-attachment: fixed;
+    }
+    .kr-text {
+      font-family: 'Noto Sans KR', sans-serif;
+    }
+    .pop-card {
+      transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.18s ease, border-color 0.18s ease;
+    }
+    .pop-card:hover {
+      transform: translateY(-2px);
+    }
+    .btn-3d {
+      transition: all 0.14s ease;
+      box-shadow: 0 4px 0 rgba(30, 27, 75, 0.22);
+    }
+    .btn-3d:active {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 rgba(30, 27, 75, 0.22);
+    }
+    /* Custom scrollbar for stepper */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-6px); }
+    }
+    .animate-float {
+      animation: floatSlow 3.5s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body class="text-slate-800 min-h-screen flex flex-col">
+
+  <!-- Top Navigation Header -->
+  <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-indigo-100 shadow-sm">
+    <div class="max-w-6xl mx-auto px-3 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-2">
+      <!-- Brand Title -->
+      <div class="flex items-center gap-2.5">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-indigo-600 via-violet-600 to-rose-500 flex items-center justify-center text-white text-xl shadow-md">
+          🚀
+        </div>
+        <div>
+          <h1 class="font-extrabold text-sm sm:text-base md:text-lg tracking-tight bg-gradient-to-r from-indigo-700 via-violet-700 to-rose-600 bg-clip-text text-transparent leading-tight">
+            CHINH PHỤC HANGUL
+          </h1>
+          <p class="text-[11px] sm:text-xs font-medium text-slate-500 hidden sm:block">
+            Nguyên âm • Phụ âm • Patchim • Quy tắc nối âm
+          </p>
+        </div>
+      </div>
+
+      <!-- Mode Switcher Tabs -->
+      <div class="flex items-center bg-slate-100 p-1 rounded-2xl border border-slate-200/80">
+        <button id="tab-student" onclick="switchMode('student')"
+          class="px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-1.5 transition-all bg-indigo-600 text-white shadow-sm">
+          <span>🎮</span> <span>Góc Học Viên</span>
+        </button>
+        <button id="tab-teacher" onclick="switchMode('teacher')"
+          class="px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-1.5 transition-all text-slate-600 hover:text-indigo-700">
+          <span>👩‍🏫</span> <span>Bảng Điểm Giáo Viên</span>
+          <span id="teacher-badge-count" class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-rose-500 text-white font-extrabold">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="flex-1 max-w-5xl w-full mx-auto px-3 sm:px-6 py-5 sm:py-8">
+
+    <!-- ==================== STUDENT ARENA VIEW ==================== -->
+    <section id="view-student" class="space-y-6">
+
+      <!-- STEP 1: REGISTRATION CARD -->
+      <div id="student-register-card" class="max-w-xl mx-auto bg-white rounded-3xl shadow-xl border-2 border-indigo-100 overflow-hidden">
+        <div class="bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 p-6 sm:p-8 text-white text-center relative overflow-hidden">
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm text-xs font-bold uppercase tracking-wider mb-3">
+            <span>🇰🇷</span> Phiếu Thử Thách Tương Tác • 6 Vòng Đấu
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-black tracking-tight leading-snug mb-2">
+            🚀 PHIẾU THỬ THÁCH<br/>CHINH PHỤC HANGUL
+          </h2>
+          <p class="text-indigo-100 text-xs sm:text-sm font-medium">
+            ÔN TẬP NGUYÊN ÂM • PHỤ ÂM • PATCHIM • QUY TẮC NỐI ÂM
+          </p>
+        </div>
+
+        <form id="register-form" onsubmit="startChallenge(event)" class="p-6 sm:p-8 space-y-5">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-extrabold uppercase tracking-wider text-slate-600 mb-1.5">
+                👤 Họ và tên học viên <span class="text-rose-500">*</span>
+              </label>
+              <input type="text" id="input-name" required placeholder="Ví dụ: Nguyễn Minh Anh"
+                class="w-full px-4 py-3 rounded-2xl border-2 border-slate-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/15 outline-none font-semibold text-slate-800 transition-all" />
+            </div>
+
+            <div>
+              <label class="block text-xs font-extrabold uppercase tracking-wider text-slate-600 mb-1.5">
+                🏫 Lớp <span class="text-rose-500">*</span>
+              </label>
+              <input type="text" id="input-class" required placeholder="Ví dụ: Sơ cấp 1A"
+                class="w-full px-4 py-3 rounded-2xl border-2 border-slate-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/15 outline-none font-semibold text-slate-800 transition-all" />
+            </div>
+
+            <div>
+              <label class="block text-xs font-extrabold uppercase tracking-wider text-slate-600 mb-1.5">
+                📅 Ngày làm bài
+              </label>
+              <input type="date" id="input-date" required
+                class="w-full px-4 py-3 rounded-2xl border-2 border-slate-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/15 outline-none font-semibold text-slate-800 transition-all" />
+            </div>
+          </div>
+
+          <!-- Round Overview Badges -->
+          <div class="bg-indigo-50/70 rounded-2xl p-4 border border-indigo-100">
+            <p class="text-xs font-extrabold text-indigo-900 mb-2.5 flex items-center gap-1.5">
+              <span>🗺️</span> Bản đồ 6 chặng thử thách (65 câu hỏi):
+            </p>
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs font-semibold text-slate-700">
+              <div class="bg-white px-2.5 py-1.5 rounded-xl border border-indigo-100 flex items-center gap-1.5">
+                <span class="text-indigo-600 font-black">V1</span> Nguyên & Phụ âm
+              </div>
+              <div class="bg-white px-2.5 py-1.5 rounded-xl border border-indigo-100 flex items-center gap-1.5">
+                <span class="text-violet-600 font-black">V2</span> Ghép chữ thần tốc
+              </div>
+              <div class="bg-white px-2.5 py-1.5 rounded-xl border border-indigo-100 flex items-center gap-1.5">
+                <span class="text-rose-600 font-black">V3</span> Xưởng ghép Patchim
+              </div>
+              <div class="bg-white px-2.5 py-1.5 rounded-xl border border-indigo-100 flex items-center gap-1.5">
+                <span class="text-amber-600 font-black">V4</span> Thám tử Patchim
+              </div>
+              <div class="bg-white px-2.5 py-1.5 rounded-xl border border-indigo-100 flex items-center gap-1.5">
+                <span class="text-emerald-600 font-black">V5</span> Mê cung nối âm
+              </div>
+              <div class="bg-white px-2.5 py-1.5 rounded-xl border border-indigo-100 flex items-center gap-1.5">
+                <span class="text-fuchsia-600 font-black">V6</span> Về đích (6A & 6B)
+              </div>
+            </div>
+          </div>
+
+          <button type="submit"
+            class="w-full py-4 rounded-2xl bg-gradient-to-r from-indigo-600 via-violet-600 to-rose-500 hover:from-indigo-500 hover:to-rose-400 text-white font-black text-base sm:text-lg tracking-wide btn-3d flex items-center justify-center gap-2 cursor-pointer">
+            <span>🚀 BẮT ĐẦU THỬ THÁCH!</span>
+          </button>
+        </form>
+      </div>
+
+      <!-- STEP 2: ACTIVE GAMEPLAY ARENA -->
+      <div id="student-arena" class="hidden space-y-5">
+
+        <!-- Sticky Student HUD & Progress -->
+        <div class="bg-white rounded-3xl p-4 sm:p-5 shadow-md border border-indigo-100 space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+              <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 text-white font-black text-lg flex items-center justify-center shadow">
+                🎓
+              </div>
+              <div>
+                <div class="flex items-center gap-2 flex-wrap">
+                  <span id="hud-name" class="font-extrabold text-slate-900 text-sm sm:text-base">Học viên</span>
+                  <span id="hud-class" class="px-2.5 py-0.5 rounded-full bg-indigo-100 text-indigo-700 text-xs font-extrabold">Lớp</span>
+                </div>
+                <p id="hud-date" class="text-xs text-slate-500 font-medium">Ngày: --/--/----</p>
+              </div>
+            </div>
+
+            <!-- Live Completion Counter -->
+            <div class="flex items-center gap-3">
+              <div class="text-right">
+                <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 block">Tiến độ hoàn thành</span>
+                <span id="hud-progress-text" class="font-black text-indigo-600 text-sm sm:text-base">0 / 65 câu</span>
+              </div>
+              <div class="w-12 h-12 rounded-2xl bg-emerald-50 border-2 border-emerald-200 flex flex-col items-center justify-center">
+                <span id="hud-percent" class="text-xs font-black text-emerald-600">0%</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Progress Bar -->
+          <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden p-0.5 border border-slate-200/70">
+            <div id="hud-progress-bar" class="h-full rounded-full bg-gradient-to-r from-indigo-500 via-violet-500 to-emerald-400 transition-all duration-300" style="width: 0%"></div>
+          </div>
+
+          <!-- 6-Round Stepper Pills -->
+          <div id="round-stepper" class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <!-- Dynamic Round Content Area -->
+        <div id="round-container" class="space-y-5">
+          <!-- Populated dynamically per round -->
+        </div>
+
+        <!-- Bottom Round Navigation Bar -->
+        <div class="bg-white rounded-3xl p-4 shadow-md border border-indigo-100 flex items-center justify-between gap-3">
+          <button id="btn-prev-round" onclick="changeRound(-1)"
+            class="px-4 sm:px-6 py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold text-sm flex items-center gap-1.5 transition-all disabled:opacity-40 disabled:pointer-events-none">
+            <span>⬅️</span> <span>Vòng trước</span>
+          </button>
+
+          <div class="text-center hidden sm:block">
+            <span id="footer-round-indicator" class="text-xs font-extrabold text-slate-500 uppercase tracking-wider">Vòng 1 / 6</span>
+          </div>
+
+          <button id="btn-next-round" onclick="changeRound(1)"
+            class="px-5 sm:px-7 py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold text-sm flex items-center gap-1.5 btn-3d">
+            <span>Vòng tiếp theo</span> <span>➡️</span>
+          </button>
+
+          <button id="btn-submit-all" onclick="confirmAndSubmit()"
+            class="hidden px-5 sm:px-8 py-3.5 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-black text-sm sm:text-base flex items-center gap-2 btn-3d">
+            <span>🏆 NỘP BÀI & XEM ĐIỂM</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 3: SUBMISSION RESULT & DETAILED REVIEW -->
+      <div id="student-result-view" class="hidden space-y-6">
+        <!-- Hero Score Card -->
+        <div class="bg-white rounded-3xl shadow-xl border-2 border-indigo-100 overflow-hidden">
+          <div class="bg-gradient-to-r from-indigo-600 via-violet-600 to-rose-500 p-6 sm:p-8 text-white text-center relative">
+            <div class="inline-block px-4 py-1.5 rounded-full bg-white/20 backdrop-blur-sm text-xs font-extrabold uppercase tracking-wider mb-3">
+              🎉 HOÀN THÀNH THỬ THÁCH HANGUL!
+            </div>
+            <h2 id="res-badge-title" class="text-2xl sm:text-4xl font-black mb-1 animate-float">
+              👑 CHIẾN THẦN HANGUL
+            </h2>
+            <p id="res-student-meta" class="text-indigo-100 text-xs sm:text-sm font-semibold">
+              Học viên • Lớp • Ngày
+            </p>
+
+            <!-- Big Score Circle -->
+            <div class="mt-6 inline-flex flex-col items-center justify-center bg-white text-slate-900 rounded-3xl px-8 py-5 shadow-2xl border-4 border-amber-300">
+              <span class="text-xs font-extrabold uppercase tracking-widest text-slate-400">Tổng điểm của bạn</span>
+              <div class="flex items-baseline gap-1 mt-1">
+                <span id="res-score-10" class="text-4xl sm:text-5xl font-black text-indigo-600">10.0</span>
+                <span class="text-lg font-extrabold text-slate-400">/ 10</span>
+              </div>
+              <span id="res-raw-count" class="mt-1 px-3 py-0.5 rounded-full bg-emerald-100 text-emerald-700 text-xs font-extrabold">
+                Đúng 65 / 65 câu
+              </span>
+            </div>
+
+            <div id="res-sync-status" class="mt-4 text-xs font-semibold text-emerald-200 flex items-center justify-center gap-1.5">
+              <span>✅</span> <span>Đã gửi điểm lên Bảng Điểm Giáo Viên thành công!</span>
+            </div>
+          </div>
+
+          <!-- Round-by-Round Breakdown -->
+          <div class="p-5 sm:p-7 space-y-5">
+            <h3 class="font-extrabold text-slate-800 text-base sm:text-lg flex items-center gap-2">
+              <span>📊</span> Kết quả chi tiết từng vòng đấu
+            </h3>
+            <div id="res-rounds-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              <!-- Populated by JS -->
+            </div>
+
+            <div class="pt-3 flex flex-wrap items-center justify-center gap-3">
+              <button onclick="toggleDetailedReview()" id="btn-toggle-review"
+                class="px-6 py-3.5 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold text-sm btn-3d flex items-center gap-2">
+                <span>🔍</span> <span>Xem lại đáp án chi tiết (65 câu)</span>
+              </button>
+              <button onclick="resetForNewAttempt()"
+                class="px-6 py-3.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold text-sm flex items-center gap-2 transition-all">
+                <span>🔄</span> <span>Làm lại bài mới</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Detailed Answer Key Review Section -->
+        <div id="detailed-review-container" class="hidden space-y-5">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ==================== TEACHER DASHBOARD VIEW ==================== -->
+    <section id="view-teacher" class="hidden space-y-6">
+
+      <!-- Teacher PIN Gate -->
+      <div id="teacher-pin-gate" class="max-w-md mx-auto bg-white rounded-3xl shadow-xl border-2 border-indigo-100 p-6 sm:p-8 text-center space-y-5">
+        <div class="w-16 h-16 rounded-3xl bg-indigo-100 text-indigo-600 text-3xl flex items-center justify-center mx-auto shadow-inner">
+          🔐
+        </div>
+        <div>
+          <h2 class="text-xl sm:text-2xl font-black text-slate-800">Khu Vực Giáo Viên</h2>
+          <p class="text-xs sm:text-sm text-slate-500 mt-1">
+            Nhập mã PIN để xem bảng điểm trực tuyến & chi tiết bài làm của từng học viên.
+          </p>
+        </div>
+
+        <form onsubmit="unlockTeacherDashboard(event)" class="space-y-4">
+          <input type="password" id="teacher-pin-input" maxlength="8" placeholder="Nhập mã PIN..."
+            class="w-full text-center tracking-[0.4em] text-xl font-black px-4 py-3.5 rounded-2xl border-2 border-slate-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/15 outline-none" />
+          <p id="teacher-pin-error" class="text-xs font-bold text-rose-500 hidden">
+            ❌ Mã PIN chưa đúng! Vui lòng thử lại.
+          </p>
+          <button type="submit"
+            class="w-full py-3.5 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold text-sm btn-3d">
+            🔓 MỞ BẢNG ĐIỂM GIÁO VIÊN
+          </button>
+        </form>
+      </div>
+
+      <!-- Unlocked Teacher Dashboard Content -->
+      <div id="teacher-dashboard-content" class="hidden space-y-6">
+
+        <!-- Dashboard Top Banner -->
+        <div class="bg-white rounded-3xl p-5 sm:p-6 shadow-md border border-indigo-100 flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 text-[11px] font-extrabold uppercase tracking-wider flex items-center gap-1">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span> Đồng bộ trực tuyến
+              </span>
+            </div>
+            <h2 class="text-xl sm:text-2xl font-black text-slate-800 mt-1">
+              👩‍🏫 Bảng Theo Dõi Điểm Học Viên
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-500">
+              Tự động cập nhật ngay khi học viên nhấn nộp bài từ bất kỳ thiết bị nào.
+            </p>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2">
+            <button onclick="fetchSubmissionsFromGoogleSheet()"
+              class="px-4 py-2.5 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold text-xs sm:text-sm flex items-center gap-1.5 btn-3d">
+              <span>🔄</span> <span>Làm mới điểm</span>
+            </button>
+            <button onclick="openChangePinModal()"
+              class="px-4 py-2.5 rounded-2xl bg-amber-500 hover:bg-amber-400 text-white font-extrabold text-xs sm:text-sm flex items-center gap-1.5 btn-3d">
+              <span>🔑</span> <span>Đổi mã PIN</span>
+            </button>
+            <button onclick="exportSubmissionsCSV()"
+              class="px-4 py-2.5 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs sm:text-sm flex items-center gap-1.5 btn-3d">
+              <span>📥</span> <span>Xuất Excel (CSV)</span>
+            </button>
+            <button onclick="lockTeacherDashboard()"
+              class="px-3.5 py-2.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-xs sm:text-sm">
+              🔒 Khóa
+            </button>
+          </div>
+        </div>
+
+        <!-- 4 Summary KPI Cards -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+          <div class="bg-white rounded-3xl p-4 sm:p-5 border border-indigo-100 shadow-sm">
+            <span class="text-xs font-extrabold uppercase tracking-wider text-slate-400">Tổng bài nộp</span>
+            <div class="mt-2 flex items-baseline justify-between">
+              <span id="stat-total" class="text-2xl sm:text-3xl font-black text-indigo-600">0</span>
+              <span class="text-xl">📝</span>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-3xl p-4 sm:p-5 border border-indigo-100 shadow-sm">
+            <span class="text-xs font-extrabold uppercase tracking-wider text-slate-400">Điểm trung bình</span>
+            <div class="mt-2 flex items-baseline justify-between">
+              <span id="stat-avg" class="text-2xl sm:text-3xl font-black text-violet-600">0.0</span>
+              <span class="text-xl">📊</span>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-3xl p-4 sm:p-5 border border-indigo-100 shadow-sm">
+            <span class="text-xs font-extrabold uppercase tracking-wider text-slate-400">Điểm cao nhất</span>
+            <div class="mt-2 flex items-baseline justify-between">
+              <span id="stat-max" class="text-2xl sm:text-3xl font-black text-amber-500">0.0</span>
+              <span class="text-xl">🏆</span>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-3xl p-4 sm:p-5 border border-indigo-100 shadow-sm">
+            <span class="text-xs font-extrabold uppercase tracking-wider text-slate-400">Tỷ lệ đạt (≥ 5.0)</span>
+            <div class="mt-2 flex items-baseline justify-between">
+              <span id="stat-pass" class="text-2xl sm:text-3xl font-black text-emerald-600">0%</span>
+              <span class="text-xl">🎯</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filters & Search Bar -->
+        <div class="bg-white rounded-3xl p-4 shadow-sm border border-indigo-100 flex flex-wrap items-center gap-3">
+          <div class="flex-1 min-w-[200px]">
+            <input type="text" id="teacher-search" oninput="renderTeacherTable()" placeholder="🔍 Tìm theo tên học viên..."
+              class="w-full px-4 py-2.5 rounded-2xl bg-slate-50 border border-slate-200 focus:border-indigo-500 outline-none text-sm font-semibold" />
+          </div>
+
+          <select id="teacher-filter-class" onchange="renderTeacherTable()"
+            class="px-4 py-2.5 rounded-2xl bg-slate-50 border border-slate-200 focus:border-indigo-500 outline-none text-sm font-bold text-slate-700">
+            <option value="ALL">🏫 Tất cả các lớp</option>
+          </select>
+
+          <select id="teacher-sort" onchange="renderTeacherTable()"
+            class="px-4 py-2.5 rounded-2xl bg-slate-50 border border-slate-200 focus:border-indigo-500 outline-none text-sm font-bold text-slate-700">
+            <option value="newest">🕒 Mới nộp nhất</option>
+            <option value="highest">🏆 Điểm cao → thấp</option>
+            <option value="lowest">📉 Điểm thấp → cao</option>
+          </select>
+        </div>
+
+        <!-- Submissions Data Table -->
+        <div class="bg-white rounded-3xl shadow-md border border-indigo-100 overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-indigo-50/80 border-b border-indigo-100 text-[11px] font-extrabold uppercase tracking-wider text-indigo-900">
+                  <th class="py-3.5 px-4">STT</th>
+                  <th class="py-3.5 px-4">Học viên</th>
+                  <th class="py-3.5 px-4">Lớp</th>
+                  <th class="py-3.5 px-4">Thời gian nộp</th>
+                  <th class="py-3.5 px-4 text-center">Điểm (/10)</th>
+                  <th class="py-3.5 px-4 text-center">Đúng (/65)</th>
+                  <th class="py-3.5 px-4 hidden md:table-cell">Chi tiết 6 Vòng</th>
+                  <th class="py-3.5 px-4 text-right">Thao tác</th>
+                </tr>
+              </thead>
+              <tbody id="teacher-table-body" class="divide-y divide-slate-100 text-sm">
+                <!-- Populated dynamically -->
+              </tbody>
+            </table>
+          </div>
+
+          <div id="teacher-empty-state" class="hidden py-12 px-4 text-center space-y-2">
+            <div class="text-4xl">📭</div>
+            <p class="font-extrabold text-slate-700">Chưa có bài nộp nào phù hợp</p>
+            <p class="text-xs text-slate-400">Khi học viên hoàn thành bài tập ở tab "Góc Học Viên", điểm sẽ xuất hiện ngay tại đây!</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Custom Modal for Confirmations / Alerts / Teacher Student Inspection -->
+  <div id="custom-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/60 backdrop-blur-sm p-3 sm:p-6">
+    <div class="bg-white rounded-3xl max-w-3xl w-full max-h-[90vh] flex flex-col shadow-2xl border-2 border-indigo-100 overflow-hidden">
+      <div class="px-6 py-4 bg-indigo-50 border-b border-indigo-100 flex items-center justify-between">
+        <h3 id="modal-title" class="font-black text-base sm:text-lg text-indigo-950">Tiêu đề</h3>
+        <button onclick="closeModal()" class="w-8 h-8 rounded-full bg-white text-slate-500 hover:text-rose-600 font-black flex items-center justify-center shadow-sm">
+          ✕
+        </button>
+      </div>
+      <div id="modal-body" class="p-5 sm:p-6 overflow-y-auto space-y-4 text-sm">
+        <!-- Dynamic modal content -->
+      </div>
+      <div id="modal-footer" class="px-6 py-3.5 bg-slate-50 border-t border-slate-100 flex items-center justify-end gap-2">
+        <!-- Dynamic buttons -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Google Sheets Sync & Application Logic -->
+  <script>
+
+    // ==================== 1. CURRICULUM DATA & ANSWER KEY ====================
+    const QUIZ_DATA = {
+      round1: {
+        id: 1,
+        shortTitle: "Vòng 1",
+        title: "VÒNG 1 – TRẠM KHỞI ĐỘNG: NHẬN DIỆN NGUYÊN ÂM & PHỤ ÂM",
+        subtitle: "Chọn ký tự Hangul tương ứng với cách phát âm",
+        color: "indigo",
+        questions: [
+          { id: "r1_q1", q: "Câu 1. Nguyên âm phát âm là [ a ]:", options: ["1. ㅓ", "2. ㅏ", "3. ㅗ", "4. ㅜ"], correct: 1, explain: "ㅏ phát âm là [a]." },
+          { id: "r1_q2", q: "Câu 2. Nguyên âm phát âm là [ o ]:", options: ["1. ㅓ", "2. ㅡ", "3. ㅣ", "4. ㅏ"], correct: 0, explain: "ㅓ phát âm là [o] (miệng mở tròn vừa)." },
+          { id: "r1_q3", q: "Câu 3. Nguyên âm phát âm là [ ô ]:", options: ["1. ㅜ", "2. ㅡ", "3. ㅗ", "4. ㅓ"], correct: 2, explain: "ㅗ phát âm là [ô]." },
+          { id: "r1_q4", q: "Câu 4. Nguyên âm phát âm là [ u ]:", options: ["1. ㅗ", "2. ㅣ", "3. ㅏ", "4. ㅜ"], correct: 3, explain: "ㅜ phát âm là [u]." },
+          { id: "r1_q5", q: "Câu 5. Nguyên âm phát âm là [ ư ]:", options: ["1. ㅣ", "2. ㅡ", "3. ㅓ", "4. ㅜ"], correct: 1, explain: "ㅡ phát âm là [ư]." },
+          { id: "r1_q6", q: "Câu 6. Trong các chữ sau, đâu KHÔNG đọc là “uê”:", options: ["1. ㅙ", "2. ㅞ", "3. ㅚ", "4. ㅟ"], correct: 3, explain: "ㅟ đọc là [uy], còn ㅙ, ㅞ, ㅚ đều đọc gần giống [uê]." },
+          { id: "r1_q7", q: "Câu 7. Nguyên âm kép phát âm là [ oa ]:", options: ["1. ㅝ", "2. ㅘ", "3. ㅚ", "4. ㅟ"], correct: 1, explain: "ㅘ (ㅗ + ㅏ) phát âm là [oa]." },
+          { id: "r1_q8", q: "Câu 8. Nguyên âm kép phát âm là [ ưi ]:", options: ["1. ㅢ", "2. ㅐ", "3. ㅔ", "4. ㅙ"], correct: 0, explain: "ㅢ (ㅡ + ㅣ) phát âm là [ưi]." },
+          { id: "r1_q9", q: "Câu 9. Phụ âm bật hơi [ kh’ ]:", options: ["1. ㄱ", "2. ㄲ", "3. ㅋ", "4. ㅎ"], correct: 2, explain: "ㅋ là phụ âm bật hơi của ㄱ, đọc là [kh’]." },
+          { id: "r1_q10", q: "Câu 10. Phụ âm căng [ tt ]:", options: ["1. ㄷ", "2. ㅌ", "3. ㄴ", "4. ㄸ"], correct: 3, explain: "ㄸ là phụ âm căng (kép) của ㄷ, đọc là [tt]." }
+        ]
+      },
+      round2: {
+        id: 2,
+        shortTitle: "Vòng 2",
+        title: "VÒNG 2 – GHÉP CHỮ THẦN TỐC: TRÒ CHƠI NỐI CỘT A VÀ CỘT B",
+        subtitle: "Chạm vào ô bên Cột A rồi chọn phiên âm đúng ở Cột B (hoặc chọn trực tiếp từ danh sách)",
+        color: "violet",
+        pairs: [
+          { id: "r2_q1", num: 1, left: "ㄱ + ㅏ", correctCode: "C", explain: "ㄱ (k) + ㅏ (a) = 가 [ka]" },
+          { id: "r2_q2", num: 2, left: "ㄴ + ㅗ", correctCode: "E", explain: "ㄴ (n) + ㅗ (ô) = 노 [nô]" },
+          { id: "r2_q3", num: 3, left: "ㅁ + ㅜ", correctCode: "A", explain: "ㅁ (m) + ㅜ (u) = 무 [mu]" },
+          { id: "r2_q4", num: 4, left: "ㅅ + ㅓ", correctCode: "G", explain: "ㅅ (s) + ㅓ (o) = 서 [so]" },
+          { id: "r2_q5", num: 5, left: "ㅈ + ㅣ", correctCode: "H", explain: "ㅈ (ch) + ㅣ (i) = 지 [chi]" },
+          { id: "r2_q6", num: 6, left: "ㅎ + ㅡ", correctCode: "D", explain: "ㅎ (h) + ㅡ (ư) = 흐 [hư]" },
+          { id: "r2_q7", num: 7, left: "ㄸ + ㅏ", correctCode: "B", explain: "ㄸ (tt) + ㅏ (a) = 따 [tta]" },
+          { id: "r2_q8", num: 8, left: "ㅃ + ㅗ", correctCode: "F", explain: "ㅃ (bb) + ㅗ (ô) = 뽀 [bbô]" },
+          { id: "r2_q9", num: 9, left: "ㅋ + ㅓ", correctCode: "J", explain: "ㅋ (kh’) + ㅓ (o) = 커 [kh’o]" },
+          { id: "r2_q10", num: 10, left: "ㅊ + ㅏ", correctCode: "I", explain: "ㅊ (ch’) + ㅏ (a) = 차 [ch’a]" }
+        ],
+        choices: [
+          { code: "A", label: "A. [mu]" },
+          { code: "B", label: "B. [tta]" },
+          { code: "C", label: "C. [ka]" },
+          { code: "D", label: "D. [hư]" },
+          { code: "E", label: "E. [nô]" },
+          { code: "F", label: "F. [bbô]" },
+          { code: "G", label: "G. [so]" },
+          { code: "H", label: "H. [chi]" },
+          { code: "I", label: "I. [ch’a]" },
+          { code: "J", label: "J. [kh’o]" }
+        ]
+      },
+      round3: {
+        id: 3,
+        shortTitle: "Vòng 3",
+        title: "VÒNG 3 – XƯỞNG GHÉP PATCHIM: THÊM PHỤ ÂM CUỐI",
+        subtitle: "Ghép phụ âm đầu + nguyên âm + phụ âm cuối (Patchim) thành khối âm tiết hoàn chỉnh",
+        color: "rose",
+        cheatSheet: "📌 Bảng nhớ nhanh 7 âm đại diện Patchim: [ㄱ, ㄲ, ㅋ → k] • [ㄴ → n] • [ㄷ, ㅌ, ㅅ, ㅆ, ㅈ, ㅊ, ㅎ → t] • [ㄹ → l] • [ㅁ → m] • [ㅂ, ㅍ → p] • [ㅇ → ng]",
+        questions: [
+          { id: "r3_q1", q: "Câu 1.  ㄱ + ㅏ + ㄴ  ➔", options: ["1. 간", "2. 갇", "3. 감", "4. 강"], correct: 0, explain: "ㄱ + ㅏ + ㄴ ghép thành 간 (gan/kan)." },
+          { id: "r3_q2", q: "Câu 2.  ㅁ + ㅜ + ㄹ  ➔", options: ["1. 문", "2. 물", "3. 묵", "4. 뭇"], correct: 1, explain: "ㅁ + ㅜ + ㄹ ghép thành 물 (nước)." },
+          { id: "r3_q3", q: "Câu 3.  ㅂ + ㅏ + ㅂ  ➔", options: ["1. 밤", "2. 방", "3. 밥", "4. 반"], correct: 2, explain: "ㅂ + ㅏ + ㅂ ghép thành 밥 (cơm)." },
+          { id: "r3_q4", q: "Câu 4.  ㅅ + ㅗ + ㄴ  ➔", options: ["1. 송", "2. 속", "3. 솔", "4. 손"], correct: 3, explain: "ㅅ + ㅗ + ㄴ ghép thành 손 (bàn tay)." },
+          { id: "r3_q5", q: "Câu 5.  ㄱ + ㅣ + ㅁ  ➔", options: ["1. 김", "2. 긴", "3. 길", "4. 깁"], correct: 0, explain: "ㄱ + ㅣ + ㅁ ghép thành 김 (rong biển / họ Kim)." },
+          { id: "r3_q6", q: "Câu 6.  ㅎ + ㅏ + ㄴ  ➔", options: ["1. 할", "2. 한", "3. 함", "4. 합"], correct: 1, explain: "ㅎ + ㅏ + ㄴ ghép thành 한." },
+          { id: "r3_q7", q: "Câu 7.  ㅈ + ㅣ + ㅂ  ➔", options: ["1. 진", "2. 질", "3. 집", "4. 징"], correct: 2, explain: "ㅈ + ㅣ + ㅂ ghép thành 집 (nhà)." },
+          { id: "r3_q8", q: "Câu 8.  ㅂ + ㅏ + ㄹ  ➔", options: ["1. 발", "2. 반", "3. 밤", "4. 박"], correct: 0, explain: "ㅂ + ㅏ + ㄹ ghép thành 발 (bàn chân)." },
+          { id: "r3_q9", q: "Câu 9.  ㅊ + ㅐ + ㄱ  ➔", options: ["1. 챙", "2. 책", "3. 챈", "4. 챌"], correct: 1, explain: "ㅊ + ㅐ + ㄱ ghép thành 책 (sách)." },
+          { id: "r3_q10", q: "Câu 10.  ㄱ + ㅗ + ㅇ  ➔", options: ["1. 곤", "2. 곰", "3. 곳", "4. 공"], correct: 3, explain: "ㄱ + ㅗ + ㅇ ghép thành 공 (quả bóng)." }
+        ]
+      },
+      round4: {
+        id: 4,
+        shortTitle: "Vòng 4",
+        title: "VÒNG 4 – THÁM TỬ PATCHIM: CHỌN ĐÚNG ÂM CUỐI",
+        subtitle: "Áp dụng quy tắc 7 âm đại diện Patchim để chọn cách đọc chuẩn xác",
+        color: "amber",
+        questions: [
+          { id: "r4_q1", q: "Câu 1.  [ 밥 ]  ➔", options: ["1. bap", "2. bak", "3. bam", "4. ban"], correct: 0, explain: "Patchim ㅂ đọc đại diện là [p] ➔ bap." },
+          { id: "r4_q2", q: "Câu 2.  [ 집 ]  ➔", options: ["1. chik", "2. chim", "3. chit", "4. Chip"], correct: 3, explain: "Patchim ㅂ đọc đại diện là [p] ➔ Chip." },
+          { id: "r4_q3", q: "Câu 3.  [ 산 ]  ➔", options: ["1. sal", "2. sat", "3. san", "4. sam"], correct: 2, explain: "Patchim ㄴ đọc là [n] ➔ san." },
+          { id: "r4_q4", q: "Câu 4.  [ 물 ]  ➔", options: ["1. mun", "2. mut", "3. mum", "4. mul"], correct: 3, explain: "Patchim ㄹ đọc là [l] ➔ mul." },
+          { id: "r4_q5", q: "Câu 5.  [ 옷 ]  ➔", options: ["1. ôs", "2. ôt", "3. ôn", "4. ôk"], correct: 1, explain: "Patchim ㅅ thuộc nhóm [ㄷ,ㅌ,ㅅ,ㅆ,ㅈ,ㅊ,ㅎ → t] ➔ ôt." },
+          { id: "r4_q6", q: "Câu 6.  [ 책 ]  ➔", options: ["1. Ch’ekk", "2. Chekk", "3. Ch’ek", "4. chchek"], correct: 2, explain: "ㅊ (ch’) + ㅐ (e) + ㄱ (k) ➔ Ch’ek." },
+          { id: "r4_q7", q: "Câu 7.  [ 공 ]  ➔", options: ["1. kôn", "2. kôt", "3. kôm", "4. kông"], correct: 3, explain: "Patchim ㅇ đọc là [ng] ➔ kông." },
+          { id: "r4_q8", q: "Câu 8.  [ 꽃 ]  ➔", options: ["1. Kkôt", "2. Kkôs", "3. Kkôch", "4. Kkôn"], correct: 0, explain: "Patchim ㅊ khi đứng cuối (không nối âm) đọc đại diện là [t] ➔ Kkôt." },
+          { id: "r4_q9", q: "Câu 9.  [ 밖 ]  ➔", options: ["1. bakk", "2. bak", "3. ban", "4. bat"], correct: 1, explain: "Patchim ㄲ đọc đại diện là [k] ➔ bak." },
+          { id: "r4_q10", q: "Câu 10.  [ 낮 ]  ➔", options: ["1. nang", "2. nas", "3. nach", "4. nat"], correct: 3, explain: "Patchim ㅈ đọc đại diện là [t] ➔ nat." }
+        ]
+      },
+      round5: {
+        id: 5,
+        shortTitle: "Vòng 5",
+        title: "VÒNG 5 – MÊ CUNG NỐI ÂM: TÌM ĐƯỜNG VỀ ĐÍCH 🏆",
+        subtitle: "Khi Patchim gặp nguyên âm (ㅇ) theo sau, phụ âm cuối sẽ được nối sang âm tiết tiếp theo!",
+        color: "emerald",
+        questions: [
+          { id: "r5_q1", station: "START 🚩", word: "[ 집에 ]", options: ["A. 지베 (chi-bê)", "B. 지페 (chi-ph’ê)", "C. 집에 (chip-ê)"], correct: 0, explain: "Patchim ㅂ nối sang 에 thành 베 ➔ 지베 (chi-bê)." },
+          { id: "r5_q2", station: "Trạm 2", word: "[ 밥을 ]", options: ["A. 바플 (ba-ph’ưl)", "B. 바블 (ba-bưl)", "C. 밥을 (bap-ưl)"], correct: 1, explain: "Patchim ㅂ nối sang 을 thành 블 ➔ 바블 (ba-bưl)." },
+          { id: "r5_q3", station: "Trạm 3", word: "[ 책이 ]", options: ["A. 채키 (ch’e-kh’i)", "B. 책이 (ch’ek-i)", "C. 채기 (ch’e-ki)"], correct: 2, explain: "Patchim ㄱ nối sang 이 thành 기 ➔ 채기 (ch’e-ki)." },
+          { id: "r5_q4", station: "Trạm 4", word: "[ 옷이 ]", options: ["A. 오시 (ô-si)", "B. 오티 (ô-th’i)", "C. 오치 (ô-ch’i)"], correct: 0, explain: "Patchim ㅅ nối sang 이 giữ nguyên âm ㅅ thành 시 ➔ 오시 (ô-si)." },
+          { id: "r5_q5", station: "Trạm 5", word: "[ 문을 ]", options: ["A. 문을 (mun-ưl)", "B. 무늘 (mu-nưl)", "C. 무를 (mu-rưl)"], correct: 1, explain: "Patchim ㄴ nối sang 을 thành 늘 ➔ 무늘 (mu-nưl)." },
+          { id: "r5_q6", station: "Trạm 6", word: "[ 한국어 ]", options: ["A. 한구커 (han-ku-kh’o)", "B. 한국어 (han-kuk-o)", "C. 한구거 (han-ku-ko)"], correct: 2, explain: "Patchim ㄱ nối sang 어 thành 거 ➔ 한구거 (han-ku-ko)." },
+          { id: "r5_q7", station: "Trạm 7", word: "[ 음악을 ]", options: ["A. 으마글 (ư-ma-kưl)", "B. 으마클 (ư-ma-kh’ưl)", "C. 음악을 (ưm-ak-ưl)"], correct: 0, explain: "ㅁ nối sang 악 thành 막, ㄱ nối sang 을 thành 글 ➔ 으마글 (ư-ma-kưl)." },
+          { id: "r5_q8", station: "Trạm 8", word: "[ 꽃이 ]", options: ["A. 꼬티 (kkô-th’i)", "B. 꼬치 (kkô-ch’i)", "C. 꼬시 (kkô-si)"], correct: 1, explain: "Patchim ㅊ nối nguyên âm sang 이 thành 치 ➔ 꼬치 (kkô-ch’i)." },
+          { id: "r5_q9", station: "Trạm 9", word: "[ 같이 ]", options: ["A. 가티 (ka-thi)", "B. 가키 (ka-kh’i)", "C. 가치 (ka-ch’i)"], correct: 2, explain: "Quy tắc vòm hóa: Patchim ㅌ gặp 이 biến âm thành 치 ➔ 가치 (ka-ch’i)." },
+          { id: "r5_q10", station: "Trạm 10 🏁", word: "[ 이름이 ]", options: ["A. 이름미 (i-rưm-mi)", "B. 이르미 (i-rư-mi)", "C. 이르비 (i-rư-bi)"], correct: 1, explain: "Patchim ㅁ nối sang 이 thành 미 ➔ 이르미 (i-rư-mi)." }
+        ]
+      },
+      round6: {
+        id: 6,
+        shortTitle: "Vòng 6",
+        title: "VÒNG 6 – VỀ ĐÍCH: TÌM BẠN ĐỒNG HÀNH & VƯỢT CHƯỚNG NGẠI VẬT",
+        subtitle: "Hoàn thành cả Phần 6A (Nối từ vựng) và Phần 6B (Phát âm câu hoàn chỉnh)",
+        color: "fuchsia",
+        pairs6A: [
+          { id: "r6a_q1", num: 1, left: "나무", correctCode: "C", explain: "나무 đọc là [na-mu] (cây)." },
+          { id: "r6a_q2", num: 2, left: "책", correctCode: "A", explain: "책 đọc là [ch’ek] (sách)." },
+          { id: "r6a_q3", num: 3, left: "바다", correctCode: "B", explain: "바다 đọc là [ba-ta] (biển)." },
+          { id: "r6a_q4", num: 4, left: "물", correctCode: "D", explain: "물 đọc là [mul] (nước)." },
+          { id: "r6a_q5", num: 5, left: "사람", correctCode: "F", explain: "사람 đọc là [sa-ram] (người)." },
+          { id: "r6a_q6", num: 6, left: "학교", correctCode: "E", explain: "학교 đọc là [hak-kyo] (trường học - biến âm căng ㄱ+ㄱ→ㄲ)." },
+          { id: "r6a_q7", num: 7, left: "우유", correctCode: "H", explain: "우유 đọc là [u-yu] (sữa)." },
+          { id: "r6a_q8", num: 8, left: "가족", correctCode: "G", explain: "가족 đọc là [ka-chôk] (gia đình)." },
+          { id: "r6a_q9", num: 9, left: "어머니", correctCode: "J", explain: "어머니 đọc là [o-mo-ni] (mẹ)." },
+          { id: "r6a_q10", num: 10, left: "친구", correctCode: "I", explain: "친구 đọc là [ch’in-ku] (bạn bè)." }
+        ],
+        choices6A: [
+          { code: "A", label: "A. [ch’ek]" },
+          { code: "B", label: "B. [ba-ta]" },
+          { code: "C", label: "C. [na-mu]" },
+          { code: "D", label: "D. [mul]" },
+          { code: "E", label: "E. [hak-kyo]" },
+          { code: "F", label: "F. [sa-ram]" },
+          { code: "G", label: "G. [ka-chôk]" },
+          { code: "H", label: "H. [u-yu]" },
+          { code: "I", label: "I. [ch’in-ku]" },
+          { code: "J", label: "J. [o-mo-ni]" }
+        ],
+        questions6B: [
+          {
+            id: "r6b_q1",
+            q: "Câu 1. 이분이 선생님이에요.",
+            options: [
+              "A. [이부니 선생니미에요]",
+              "B. [이분이 선생님이에요]",
+              "C. [이부니 선생님이에요]",
+              "D. [이분이 선생니미에요]"
+            ],
+            correct: 0,
+            explain: "Nối âm cả hai chỗ: 이분이 ➔ 이부니 và 선생님이에요 ➔ 선생니미에요."
+          },
+          {
+            id: "r6b_q2",
+            q: "Câu 2. 그곳에 학교가 있어요.",
+            options: [
+              "A. [그곳에 학꾜가 이써요]",
+              "B. [그고세 학꾜가 있어요]",
+              "C. [그고세 학꾜가 이써요]",
+              "D. [그곳에 학꾜가 있써요]"
+            ],
+            correct: 2,
+            explain: "그곳에 ➔ 그고세 (nối ㅅ), 학교 ➔ 학꾜 (căng hóa ㄱ), 있어요 ➔ 이써요 (nối ㅆ)."
+          },
+          {
+            id: "r6b_q3",
+            q: "Câu 3. 친구와 음악을 들어요.",
+            options: [
+              "A. [친구와 음악을 드러요]",
+              "B. [친구와 으마글 드러요]",
+              "C. [친구와 으믈 드러요]",
+              "D. [친구와 으마글 드어요]"
+            ],
+            correct: 1,
+            explain: "음악을 ➔ 으마글 và 들어요 ➔ 드러요."
+          },
+          {
+            id: "r6b_q4",
+            q: "Câu 4. 저는 한국어를 열심히 공부해요.",
+            options: [
+              "A. [저는 한국어를 열심히 공부해요]",
+              "B. [저는 한구거를 열심히 공부해요]",
+              "C. [저는 한구거를 열시미 공부해요]",
+              "D. [저는 한국어를 열시미 공부해요]"
+            ],
+            correct: 2,
+            explain: "한국어를 ➔ 한구거를 và 열심히 ➔ 열시미."
+          },
+          {
+            id: "r6b_q5",
+            q: "Câu 5. 한국어가 어렵지만 재미있어요.",
+            options: [
+              "A. [한구거가 어려찌만 재미이써요]",
+              "B. [한국어가 어렵지만 재미있어요]",
+              "C. [한구거가 어렵지만 재미이써요]",
+              "D. [한구거가 어려찌만 재미있어요]"
+            ],
+            correct: 0,
+            explain: "한국어가 ➔ 한구거가, 어렵지만 ➔ 어려찌만 (ㅂ+ㅈ→ㅃ/ㅉ), 재미있어요 ➔ 재미이써요."
+          }
+        ]
+      }
+    };
+
+    const TOTAL_QUESTIONS = 65; // 10 + 10 + 10 + 10 + 10 + 15
+
+    // ==================== 2. APPLICATION STATE ====================
+    let state = {
+      mode: "student", // 'student' | 'teacher'
+      student: {
+        name: "",
+        className: "",
+        date: ""
+      },
+      currentRound: 1, // 1..6
+      answers: {}, // map of questionId -> selected value (index number for MCQ, code string 'A'..'J' for matching)
+      activeMatchLeft: null, // currently selected left item id in Round 2 or 6A
+      submittedResult: null,
+      teacherUnlocked: false,
+      teacherPin: "3002", // Authoritative default PIN (v2)
+      pinVersion: 2,
+      submissions: [] // synced from Firestore
+    };
+
+    // ==================== 3. GOOGLE SHEETS CLOUD SYNC ====================
+    // DÁN ĐƯỜNG LINK WEB APP GOOGLE APPS SCRIPT CỦA BẠN VÀO GIỮA HAI DẤU NGOẶC KÉP BÊN DƯỚI:
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwtwATX5_qZETJPR2K5xv2DyRSkgM7c917qnymtz4EbfOuuyPl22L-ErI6kboWCfRR8/exec";
+
+    const LOCAL_PIN_KEY = "hangul_teacher_pin_v2";
+    const savedLocalPin = localStorage.getItem(LOCAL_PIN_KEY);
+    if (savedLocalPin && savedLocalPin.length >= 4) {
+      state.teacherPin = savedLocalPin;
+    }
+
+    function isGoogleSheetConfigured() {
+      return (
+        typeof GOOGLE_SCRIPT_URL === "string" &&
+        GOOGLE_SCRIPT_URL.startsWith("https://script.google.com/")
+      );
+    }
+
+    async function fetchSubmissionsFromGoogleSheet() {
+      if (!isGoogleSheetConfigured()) {
+        console.warn("Chưa dán GOOGLE_SCRIPT_URL; đang chạy ở chế độ cục bộ.");
+        return;
+      }
+      try {
+        const res = await fetch(GOOGLE_SCRIPT_URL + "?action=list&t=" + Date.now());
+        const json = await res.json();
+        if (json && json.status === "ok" && Array.isArray(json.data)) {
+          const list = json.data.map((item, idx) => ({
+            id: item.id || "gs_" + (item.timestamp || idx),
+            ...item
+          }));
+          list.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+          state.submissions = list;
+          updateTeacherBadge();
+          if (state.mode === "teacher" && state.teacherUnlocked) {
+            renderTeacherDashboard();
+          }
+        }
+      } catch (err) {
+        console.error("Lỗi tải danh sách điểm từ Google Sheets:", err);
+      }
+    }
+
+    async function saveSubmissionToCloud(record) {
+      const recordWithId = { id: "sub_" + Date.now() + "_" + Math.floor(Math.random() * 1000), ...record };
+      // Hiển thị ngay trên thiết bị hiện tại
+      state.submissions = [recordWithId, ...state.submissions];
+      updateTeacherBadge();
+
+      if (!isGoogleSheetConfigured()) {
+        return false;
+      }
+
+      try {
+        const payload = {
+          action: "submit",
+          record: recordWithId
+        };
+        const res = await fetch(GOOGLE_SCRIPT_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "text/plain;charset=utf-8"
+          },
+          body: JSON.stringify(payload)
+        });
+        const result = await res.json();
+        return result && result.status === "ok";
+      } catch (err) {
+        console.error("Lỗi gửi điểm lên Google Sheets:", err);
+        return false;
+      }
+    }
+
+    // ==================== 4. NAVIGATION & MODE SWITCHING ====================
+    window.switchMode = function (mode) {
+      state.mode = mode;
+      const studentView = document.getElementById("view-student");
+      const teacherView = document.getElementById("view-teacher");
+      const tabStudent = document.getElementById("tab-student");
+      const tabTeacher = document.getElementById("tab-teacher");
+
+      if (mode === "student") {
+        studentView.classList.remove("hidden");
+        teacherView.classList.add("hidden");
+        tabStudent.className = "px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-1.5 transition-all bg-indigo-600 text-white shadow-sm";
+        tabTeacher.className = "px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-1.5 transition-all text-slate-600 hover:text-indigo-700";
+      } else {
+        studentView.classList.add("hidden");
+        teacherView.classList.remove("hidden");
+        tabTeacher.className = "px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-1.5 transition-all bg-indigo-600 text-white shadow-sm";
+        tabStudent.className = "px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-1.5 transition-all text-slate-600 hover:text-indigo-700";
+
+        if (state.teacherUnlocked) {
+          renderTeacherDashboard();
+        }
+      }
+    };
+
+    // ==================== 5. STUDENT ARENA LOGIC ====================
+    window.startChallenge = function (e) {
+      e.preventDefault();
+      const nameVal = document.getElementById("input-name").value.trim();
+      const classVal = document.getElementById("input-class").value.trim();
+      const dateVal = document.getElementById("input-date").value;
+
+      if (!nameVal || !classVal) return;
+
+      state.student = { name: nameVal, className: classVal, date: dateVal };
+      state.currentRound = 1;
+      state.answers = {};
+      state.activeMatchLeft = null;
+      state.submittedResult = null;
+
+      // Update HUD
+      document.getElementById("hud-name").textContent = nameVal;
+      document.getElementById("hud-class").textContent = "Lớp " + classVal;
+      document.getElementById("hud-date").textContent = "Ngày làm bài: " + formatDateVN(dateVal);
+
+      document.getElementById("student-register-card").classList.add("hidden");
+      document.getElementById("student-result-view").classList.add("hidden");
+      document.getElementById("student-arena").classList.remove("hidden");
+
+      renderStepper();
+      renderCurrentRound();
+      updateProgressHUD();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+
+    function formatDateVN(isoDate) {
+      if (!isoDate) return "--/--/----";
+      const parts = isoDate.split("-");
+      if (parts.length !== 3) return isoDate;
+      return `${parts[2]}/${parts[1]}/${parts[0]}`;
+    }
+
+    function getRoundQuestionIds(roundNum) {
+      if (roundNum === 1) return QUIZ_DATA.round1.questions.map((q) => q.id);
+      if (roundNum === 2) return QUIZ_DATA.round2.pairs.map((p) => p.id);
+      if (roundNum === 3) return QUIZ_DATA.round3.questions.map((q) => q.id);
+      if (roundNum === 4) return QUIZ_DATA.round4.questions.map((q) => q.id);
+      if (roundNum === 5) return QUIZ_DATA.round5.questions.map((q) => q.id);
+      if (roundNum === 6) {
+        return [
+          ...QUIZ_DATA.round6.pairs6A.map((p) => p.id),
+          ...QUIZ_DATA.round6.questions6B.map((q) => q.id)
+        ];
+      }
+      return [];
+    }
+
+    function renderStepper() {
+      const container = document.getElementById("round-stepper");
+      const rounds = [
+        { num: 1, label: "V1: Nguyên & Phụ âm", icon: "🔤" },
+        { num: 2, label: "V2: Ghép chữ", icon: "⚡" },
+        { num: 3, label: "V3: Xưởng Patchim", icon: "🛠️" },
+        { num: 4, label: "V4: Thám tử Patchim", icon: "🕵️" },
+        { num: 5, label: "V5: Mê cung nối âm", icon: "🧭" },
+        { num: 6, label: "V6: Về đích", icon: "🏆" }
+      ];
+
+      container.innerHTML = rounds
+        .map((r) => {
+          const qIds = getRoundQuestionIds(r.num);
+          const answeredCount = qIds.filter((id) => state.answers[id] !== undefined).length;
+          const isComplete = answeredCount === qIds.length;
+          const isActive = state.currentRound === r.num;
+
+          let pillClass = "bg-slate-100 text-slate-600 border-slate-200 hover:bg-indigo-50";
+          if (isActive) {
+            pillClass = "bg-indigo-600 text-white border-indigo-600 shadow-md scale-[1.02]";
+          } else if (isComplete) {
+            pillClass = "bg-emerald-50 text-emerald-700 border-emerald-300";
+          }
+
+          return `
+            <button onclick="jumpToRound(${r.num})"
+              class="shrink-0 px-3.5 py-2 rounded-2xl border text-xs font-extrabold flex items-center gap-1.5 transition-all ${pillClass}">
+              <span>${isComplete && !isActive ? "✅" : r.icon}</span>
+              <span>${r.label}</span>
+              <span class="px-1.5 py-0.2 rounded-full text-[10px] ${isActive ? "bg-white/20 text-white" : "bg-white text-slate-600"}">
+                ${answeredCount}/${qIds.length}
+              </span>
+            </button>
+          `;
+        })
+        .join("");
+    }
+
+    window.jumpToRound = function (num) {
+      state.currentRound = num;
+      state.activeMatchLeft = null;
+      renderStepper();
+      renderCurrentRound();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+
+    window.changeRound = function (delta) {
+      const next = state.currentRound + delta;
+      if (next >= 1 && next <= 6) {
+        jumpToRound(next);
+      }
+    };
+
+    function updateProgressHUD() {
+      const answeredTotal = Object.keys(state.answers).length;
+      const pct = Math.round((answeredTotal / TOTAL_QUESTIONS) * 100);
+      document.getElementById("hud-progress-text").textContent = `${answeredTotal} / ${TOTAL_QUESTIONS} câu`;
+      document.getElementById("hud-percent").textContent = `${pct}%`;
+      document.getElementById("hud-progress-bar").style.width = `${pct}%`;
+
+      // Update Footer Navigation buttons
+      document.getElementById("btn-prev-round").disabled = state.currentRound === 1;
+      document.getElementById("footer-round-indicator").textContent = `Vòng ${state.currentRound} / 6`;
+
+      const btnNext = document.getElementById("btn-next-round");
+      const btnSubmit = document.getElementById("btn-submit-all");
+      if (state.currentRound === 6) {
+        btnNext.classList.add("hidden");
+        btnSubmit.classList.remove("hidden");
+      } else {
+        btnNext.classList.remove("hidden");
+        btnSubmit.classList.add("hidden");
+      }
+    }
+
+    function renderCurrentRound() {
+      const container = document.getElementById("round-container");
+      const r = state.currentRound;
+
+      if (r === 1) {
+        container.innerHTML = renderMCQRoundHTML(QUIZ_DATA.round1, "from-indigo-600 to-blue-600");
+      } else if (r === 2) {
+        container.innerHTML = renderMatchingRoundHTML(
+          QUIZ_DATA.round2.title,
+          QUIZ_DATA.round2.subtitle,
+          QUIZ_DATA.round2.pairs,
+          QUIZ_DATA.round2.choices,
+          "from-violet-600 to-purple-600"
+        );
+      } else if (r === 3) {
+        container.innerHTML = renderMCQRoundHTML(QUIZ_DATA.round3, "from-rose-500 to-pink-600");
+      } else if (r === 4) {
+        container.innerHTML = renderMCQRoundHTML(QUIZ_DATA.round4, "from-amber-500 to-orange-600");
+      } else if (r === 5) {
+        container.innerHTML = renderMazeRoundHTML(QUIZ_DATA.round5);
+      } else if (r === 6) {
+        container.innerHTML = renderRound6HTML();
+      }
+      updateProgressHUD();
+    }
+
+    function renderMCQRoundHTML(roundObj, gradientClass) {
+      const cheatBanner = roundObj.cheatSheet
+        ? `<div class="bg-amber-50 border-2 border-amber-200 rounded-2xl p-4 text-xs sm:text-sm font-bold text-amber-900 shadow-sm leading-relaxed">
+            ${roundObj.cheatSheet}
+           </div>`
+        : "";
+
+      const cardsHTML = roundObj.questions
+        .map((item) => {
+          const selectedIdx = state.answers[item.id];
+          const optionsHTML = item.options
+            .map((opt, idx) => {
+              const isSelected = selectedIdx === idx;
+              const btnStyle = isSelected
+                ? "bg-indigo-600 text-white border-indigo-600 shadow-md ring-2 ring-indigo-300"
+                : "bg-slate-50 hover:bg-indigo-50/70 text-slate-800 border-slate-200 hover:border-indigo-300";
+              return `
+                <button type="button" onclick="selectMCQ('${item.id}', ${idx})"
+                  class="w-full text-left px-4 py-3 rounded-2xl border-2 font-bold text-sm sm:text-base kr-text transition-all flex items-center justify-between ${btnStyle}">
+                  <span>${opt}</span>
+                  <span class="text-xs">${isSelected ? "●" : "○"}</span>
+                </button>
+              `;
+            })
+            .join("");
+
+          return `
+            <div class="bg-white rounded-3xl p-5 shadow-sm border border-slate-200/80 pop-card space-y-3.5">
+              <div class="flex items-start justify-between gap-2">
+                <h4 class="font-extrabold text-slate-800 text-base sm:text-lg kr-text">${item.q}</h4>
+                ${selectedIdx !== undefined ? '<span class="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 text-[11px] font-extrabold shrink-0">Đã chọn</span>' : ""}
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                ${optionsHTML}
+              </div>
+            </div>
+          `;
+        })
+        .join("");
+
+      return `
+        <div class="bg-gradient-to-r ${gradientClass} rounded-3xl p-5 sm:p-6 text-white shadow-lg">
+          <h3 class="text-lg sm:text-2xl font-black tracking-tight">${roundObj.title}</h3>
+          <p class="text-white/90 text-xs sm:text-sm mt-1 font-medium">${roundObj.subtitle}</p>
+        </div>
+        ${cheatBanner}
+        <div class="space-y-4">
+          ${cardsHTML}
+        </div>
+      `;
+    }
+
+    function renderMazeRoundHTML(roundObj) {
+      const cardsHTML = roundObj.questions
+        .map((item, idx) => {
+          const selectedIdx = state.answers[item.id];
+          const isStart = idx === 0;
+          const isEnd = idx === roundObj.questions.length - 1;
+          const badgeColor = isStart
+            ? "bg-rose-500 text-white"
+            : isEnd
+            ? "bg-amber-500 text-white"
+            : "bg-emerald-100 text-emerald-800";
+
+          const optionsHTML = item.options
+            .map((opt, optIdx) => {
+              const isSelected = selectedIdx === optIdx;
+              const btnStyle = isSelected
+                ? "bg-emerald-600 text-white border-emerald-600 shadow-md ring-2 ring-emerald-300"
+                : "bg-slate-50 hover:bg-emerald-50/70 text-slate-800 border-slate-200 hover:border-emerald-300";
+              return `
+                <button type="button" onclick="selectMCQ('${item.id}', ${optIdx})"
+                  class="px-4 py-3 rounded-2xl border-2 font-bold text-sm sm:text-base kr-text transition-all text-left flex items-center justify-between ${btnStyle}">
+                  <span>${opt}</span>
+                  <span class="text-xs ml-2">${isSelected ? "✔" : ""}</span>
+                </button>
+              `;
+            })
+            .join("");
+
+          return `
+            <div class="bg-white rounded-3xl p-5 shadow-sm border border-emerald-100 pop-card space-y-3.5 relative">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <div class="flex items-center gap-2.5">
+                  <span class="px-3 py-1 rounded-full text-xs font-black ${badgeColor}">
+                    ${item.station}
+                  </span>
+                  <span class="text-lg sm:text-xl font-black text-slate-900 kr-text">
+                    ${item.word}
+                  </span>
+                </div>
+                ${selectedIdx !== undefined ? '<span class="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 text-[11px] font-extrabold">Đã vượt trạm</span>' : ""}
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-2.5">
+                ${optionsHTML}
+              </div>
+            </div>
+          `;
+        })
+        .join("");
+
+      return `
+        <div class="bg-gradient-to-r from-emerald-600 to-teal-600 rounded-3xl p-5 sm:p-6 text-white shadow-lg">
+          <h3 class="text-lg sm:text-2xl font-black tracking-tight">${roundObj.title}</h3>
+          <p class="text-emerald-100 text-xs sm:text-sm mt-1 font-medium">${roundObj.subtitle}</p>
+        </div>
+        <div class="space-y-4">
+          ${cardsHTML}
+        </div>
+      `;
+    }
+
+    function renderMatchingRoundHTML(title, subtitle, pairs, choices, gradientClass) {
+      // Find which right codes are already assigned to keep track
+      const usedCodesMap = {};
+      pairs.forEach((p) => {
+        if (state.answers[p.id]) {
+          usedCodesMap[state.answers[p.id]] = p.num;
+        }
+      });
+
+      const leftListHTML = pairs
+        .map((p) => {
+          const chosenCode = state.answers[p.id];
+          const chosenObj = choices.find((c) => c.code === chosenCode);
+          const isActive = state.activeMatchLeft === p.id;
+
+          let cardBorder = "border-slate-200 bg-white";
+          if (isActive) {
+            cardBorder = "border-indigo-600 bg-indigo-50 ring-4 ring-indigo-500/15";
+          } else if (chosenObj) {
+            cardBorder = "border-emerald-400 bg-emerald-50/50";
+          }
+
+          const selectDropdownOptions = [
+            `<option value="">-- Chọn đáp án --</option>`,
+            ...choices.map(
+              (c) => `<option value="${c.code}" ${chosenCode === c.code ? "selected" : ""}>${c.label}</option>`
+            )
+          ].join("");
+
+          return `
+            <div onclick="activateMatchLeft('${p.id}')"
+              class="p-3.5 rounded-2xl border-2 transition-all cursor-pointer flex flex-wrap items-center justify-between gap-2 ${cardBorder}">
+              <div class="flex items-center gap-2.5">
+                <span class="w-7 h-7 rounded-xl bg-indigo-100 text-indigo-700 font-black text-xs flex items-center justify-center">
+                  ${p.num}
+                </span>
+                <span class="font-black text-base sm:text-lg text-slate-800 kr-text">${p.left}</span>
+              </div>
+
+              <div class="flex items-center gap-2" onclick="event.stopPropagation()">
+                <select onchange="assignMatchPair('${p.id}', this.value)"
+                  class="px-3 py-1.5 rounded-xl border border-slate-300 bg-white text-xs sm:text-sm font-extrabold text-indigo-700 focus:border-indigo-500 outline-none">
+                  ${selectDropdownOptions}
+                </select>
+              </div>
+            </div>
+          `;
+        })
+        .join("");
+
+      const rightPoolHTML = choices
+        .map((c) => {
+          const matchedNum = usedCodesMap[c.code];
+          const btnClass = matchedNum
+            ? "bg-emerald-100 border-emerald-300 text-emerald-800"
+            : state.activeMatchLeft
+            ? "bg-amber-50 border-amber-300 text-slate-800 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 animate-pulse"
+            : "bg-slate-50 border-slate-200 text-slate-700 hover:bg-indigo-50";
+
+          return `
+            <button type="button" onclick="pickMatchRight('${c.code}')"
+              class="w-full p-3.5 rounded-2xl border-2 font-extrabold text-sm sm:text-base text-left transition-all flex items-center justify-between ${btnClass}">
+              <span>${c.label}</span>
+              ${
+                matchedNum
+                  ? `<span class="px-2 py-0.5 rounded-full bg-emerald-600 text-white text-[10px] font-black">Đã nối câu ${matchedNum}</span>`
+                  : `<span class="text-xs text-slate-400">Chạm để nối</span>`
+              }
+            </button>
+          `;
+        })
+        .join("");
+
+      return `
+        <div class="bg-gradient-to-r ${gradientClass} rounded-3xl p-5 sm:p-6 text-white shadow-lg">
+          <h3 class="text-lg sm:text-2xl font-black tracking-tight">${title}</h3>
+          <p class="text-white/90 text-xs sm:text-sm mt-1 font-medium">${subtitle}</p>
+        </div>
+
+        <div class="bg-indigo-50 border border-indigo-200 rounded-2xl p-3.5 text-xs font-bold text-indigo-900 flex items-center justify-between flex-wrap gap-2">
+          <span>💡 Mẹo chơi nhanh: Chạm chọn 1 ô ở <b>Cột A</b>, sau đó chạm đáp án tương ứng ở <b>Cột B</b> (hoặc chọn trực tiếp trong ô thả xuống).</span>
+          ${
+            state.activeMatchLeft
+              ? `<span class="px-2.5 py-1 rounded-full bg-indigo-600 text-white font-extrabold">Đang chọn mục bên trái ➔ Hãy bấm đáp án Cột B!</span>`
+              : ""
+          }
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+          <div class="bg-white rounded-3xl p-4 sm:p-5 shadow-sm border border-slate-200 space-y-2.5">
+            <h4 class="font-black text-xs uppercase tracking-wider text-indigo-600 mb-2">📌 CỘT A (Đề bài)</h4>
+            ${leftListHTML}
+          </div>
+
+          <div class="bg-white rounded-3xl p-4 sm:p-5 shadow-sm border border-slate-200 space-y-2.5">
+            <h4 class="font-black text-xs uppercase tracking-wider text-violet-600 mb-2">🎯 CỘT B (Phiên âm tương ứng)</h4>
+            ${rightPoolHTML}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderRound6HTML() {
+      const part6AHTML = renderMatchingRoundHTML(
+        "PHẦN 6A – TÌM BẠN ĐỒNG HÀNH: TRÒ CHƠI NỐI TỪ VỰNG (10 CÂU)",
+        "Nối từ vựng tiếng Hàn ở Cột A với phiên âm đọc đúng ở Cột B",
+        QUIZ_DATA.round6.pairs6A,
+        QUIZ_DATA.round6.choices6A,
+        "from-fuchsia-600 to-purple-600"
+      );
+
+      const part6BCards = QUIZ_DATA.round6.questions6B
+        .map((item) => {
+          const selectedIdx = state.answers[item.id];
+          const optionsHTML = item.options
+            .map((opt, idx) => {
+              const isSelected = selectedIdx === idx;
+              const btnStyle = isSelected
+                ? "bg-fuchsia-600 text-white border-fuchsia-600 shadow-md ring-2 ring-fuchsia-300"
+                : "bg-slate-50 hover:bg-fuchsia-50/70 text-slate-800 border-slate-200 hover:border-fuchsia-300";
+              return `
+                <button type="button" onclick="selectMCQ('${item.id}', ${idx})"
+                  class="w-full text-left px-4 py-3 rounded-2xl border-2 font-bold text-sm sm:text-base kr-text transition-all flex items-center justify-between ${btnStyle}">
+                  <span>${opt}</span>
+                  <span class="text-xs">${isSelected ? "●" : "○"}</span>
+                </button>
+              `;
+            })
+            .join("");
+
+          return `
+            <div class="bg-white rounded-3xl p-5 shadow-sm border border-fuchsia-100 pop-card space-y-3.5">
+              <div class="flex items-start justify-between gap-2">
+                <h4 class="font-extrabold text-slate-900 text-base sm:text-lg kr-text">${item.q}</h4>
+                ${selectedIdx !== undefined ? '<span class="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 text-[11px] font-extrabold shrink-0">Đã chọn</span>' : ""}
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                ${optionsHTML}
+              </div>
+            </div>
+          `;
+        })
+        .join("");
+
+      return `
+        <div class="space-y-6">
+          ${part6AHTML}
+
+          <div class="bg-gradient-to-r from-rose-600 to-orange-500 rounded-3xl p-5 sm:p-6 text-white shadow-lg mt-6">
+            <h3 class="text-lg sm:text-2xl font-black tracking-tight">PHẦN 6B – VƯỢT CHƯỚNG NGẠI VẬT: CHỌN CÁC PHÁT ÂM ĐÚNG (5 CÂU)</h3>
+            <p class="text-rose-100 text-xs sm:text-sm mt-1 font-medium">Vận dụng tổng hợp quy tắc nối âm, căng hóa và biến âm trong câu hoàn chỉnh</p>
+          </div>
+          <div class="space-y-4">
+            ${part6BCards}
+          </div>
+        </div>
+      `;
+    }
+
+    // ==================== 6. STUDENT INTERACTION HANDLERS ====================
+    window.selectMCQ = function (questionId, optionIndex) {
+      state.answers[questionId] = optionIndex;
+      renderStepper();
+      renderCurrentRound();
+    };
+
+    window.activateMatchLeft = function (pairId) {
+      state.activeMatchLeft = state.activeMatchLeft === pairId ? null : pairId;
+      renderCurrentRound();
+    };
+
+    window.pickMatchRight = function (code) {
+      if (!state.activeMatchLeft) {
+        // Auto-select first unanswered left item in current round
+        const pairs = state.currentRound === 2 ? QUIZ_DATA.round2.pairs : QUIZ_DATA.round6.pairs6A;
+        const firstUnanswered = pairs.find((p) => !state.answers[p.id]) || pairs[0];
+        state.activeMatchLeft = firstUnanswered.id;
+      }
+      state.answers[state.activeMatchLeft] = code;
+
+      // Advance activeMatchLeft to next unanswered item automatically
+      const pairs = state.currentRound === 2 ? QUIZ_DATA.round2.pairs : QUIZ_DATA.round6.pairs6A;
+      const nextUnanswered = pairs.find((p) => !state.answers[p.id]);
+      state.activeMatchLeft = nextUnanswered ? nextUnanswered.id : null;
+
+      renderStepper();
+      renderCurrentRound();
+    };
+
+    window.assignMatchPair = function (pairId, code) {
+      if (!code) {
+        delete state.answers[pairId];
+      } else {
+        state.answers[pairId] = code;
+      }
+      state.activeMatchLeft = null;
+      renderStepper();
+      renderCurrentRound();
+    };
+
+    // ==================== 7. GRADING & SUBMISSION ====================
+    function evaluateSubmission() {
+      const roundScores = {
+        r1: { label: "Vòng 1: Nguyên & Phụ âm", correct: 0, total: 10 },
+        r2: { label: "Vòng 2: Ghép chữ thần tốc", correct: 0, total: 10 },
+        r3: { label: "Vòng 3: Xưởng ghép Patchim", correct: 0, total: 10 },
+        r4: { label: "Vòng 4: Thám tử Patchim", correct: 0, total: 10 },
+        r5: { label: "Vòng 5: Mê cung nối âm", correct: 0, total: 10 },
+        r6: { label: "Vòng 6: Về đích (6A & 6B)", correct: 0, total: 15 }
+      };
+
+      const itemBreakdown = [];
+
+      // Round 1
+      QUIZ_DATA.round1.questions.forEach((q) => {
+        const userAns = state.answers[q.id];
+        const isCorrect = userAns === q.correct;
+        if (isCorrect) roundScores.r1.correct++;
+        itemBreakdown.push({
+          round: "Vòng 1",
+          prompt: q.q,
+          userAnswerText: userAns !== undefined ? q.options[userAns] : "Chưa trả lời",
+          correctAnswerText: q.options[q.correct],
+          isCorrect,
+          explain: q.explain
+        });
+      });
+
+      // Round 2
+      QUIZ_DATA.round2.pairs.forEach((p) => {
+        const userCode = state.answers[p.id];
+        const isCorrect = userCode === p.correctCode;
+        if (isCorrect) roundScores.r2.correct++;
+        const userChoiceObj = QUIZ_DATA.round2.choices.find((c) => c.code === userCode);
+        const correctChoiceObj = QUIZ_DATA.round2.choices.find((c) => c.code === p.correctCode);
+        itemBreakdown.push({
+          round: "Vòng 2",
+          prompt: `Câu ${p.num}. ${p.left}`,
+          userAnswerText: userChoiceObj ? userChoiceObj.label : "Chưa nối",
+          correctAnswerText: correctChoiceObj.label,
+          isCorrect,
+          explain: p.explain
+        });
+      });
+
+      // Round 3
+      QUIZ_DATA.round3.questions.forEach((q) => {
+        const userAns = state.answers[q.id];
+        const isCorrect = userAns === q.correct;
+        if (isCorrect) roundScores.r3.correct++;
+        itemBreakdown.push({
+          round: "Vòng 3",
+          prompt: q.q,
+          userAnswerText: userAns !== undefined ? q.options[userAns] : "Chưa trả lời",
+          correctAnswerText: q.options[q.correct],
+          isCorrect,
+          explain: q.explain
+        });
+      });
+
+      // Round 4
+      QUIZ_DATA.round4.questions.forEach((q) => {
+        const userAns = state.answers[q.id];
+        const isCorrect = userAns === q.correct;
+        if (isCorrect) roundScores.r4.correct++;
+        itemBreakdown.push({
+          round: "Vòng 4",
+          prompt: q.q,
+          userAnswerText: userAns !== undefined ? q.options[userAns] : "Chưa trả lời",
+          correctAnswerText: q.options[q.correct],
+          isCorrect,
+          explain: q.explain
+        });
+      });
+
+      // Round 5
+      QUIZ_DATA.round5.questions.forEach((q) => {
+        const userAns = state.answers[q.id];
+        const isCorrect = userAns === q.correct;
+        if (isCorrect) roundScores.r5.correct++;
+        itemBreakdown.push({
+          round: "Vòng 5",
+          prompt: `${q.station}: ${q.word}`,
+          userAnswerText: userAns !== undefined ? q.options[userAns] : "Chưa trả lời",
+          correctAnswerText: q.options[q.correct],
+          isCorrect,
+          explain: q.explain
+        });
+      });
+
+      // Round 6A
+      QUIZ_DATA.round6.pairs6A.forEach((p) => {
+        const userCode = state.answers[p.id];
+        const isCorrect = userCode === p.correctCode;
+        if (isCorrect) roundScores.r6.correct++;
+        const userChoiceObj = QUIZ_DATA.round6.choices6A.find((c) => c.code === userCode);
+        const correctChoiceObj = QUIZ_DATA.round6.choices6A.find((c) => c.code === p.correctCode);
+        itemBreakdown.push({
+          round: "Vòng 6A",
+          prompt: `Từ ${p.num}. ${p.left}`,
+          userAnswerText: userChoiceObj ? userChoiceObj.label : "Chưa nối",
+          correctAnswerText: correctChoiceObj.label,
+          isCorrect,
+          explain: p.explain
+        });
+      });
+
+      // Round 6B
+      QUIZ_DATA.round6.questions6B.forEach((q) => {
+        const userAns = state.answers[q.id];
+        const isCorrect = userAns === q.correct;
+        if (isCorrect) roundScores.r6.correct++;
+        itemBreakdown.push({
+          round: "Vòng 6B",
+          prompt: q.q,
+          userAnswerText: userAns !== undefined ? q.options[userAns] : "Chưa trả lời",
+          correctAnswerText: q.options[q.correct],
+          isCorrect,
+          explain: q.explain
+        });
+      });
+
+      const totalCorrect =
+        roundScores.r1.correct +
+        roundScores.r2.correct +
+        roundScores.r3.correct +
+        roundScores.r4.correct +
+        roundScores.r5.correct +
+        roundScores.r6.correct;
+
+      const score10 = Number(((totalCorrect / TOTAL_QUESTIONS) * 10).toFixed(2));
+
+      return {
+        studentName: state.student.name,
+        className: state.student.className,
+        examDate: state.student.date,
+        submittedAtDisplay: new Date().toLocaleString("vi-VN"),
+        timestamp: Date.now(),
+        totalCorrect,
+        totalQuestions: TOTAL_QUESTIONS,
+        score10,
+        roundScores,
+        itemBreakdown
+      };
+    }
+
+    window.confirmAndSubmit = function () {
+      const answeredCount = Object.keys(state.answers).length;
+      const unanswered = TOTAL_QUESTIONS - answeredCount;
+
+      if (unanswered > 0) {
+        openModal(
+          "⚠️ Bạn vẫn còn câu chưa hoàn thành!",
+          `<p class="text-slate-700 leading-relaxed">
+            Bạn đã làm được <b class="text-indigo-600">${answeredCount}/${TOTAL_QUESTIONS}</b> câu (còn <b class="text-rose-600">${unanswered} câu</b> chưa chọn đáp án).
+          </p>
+          <p class="text-slate-600">Bạn muốn quay lại làm tiếp hay nộp bài ngay bây giờ?</p>`,
+          `
+            <button onclick="closeModal()" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold text-xs sm:text-sm">
+              ✏️ Quay lại làm tiếp
+            </button>
+            <button onclick="closeModal(); executeFinalSubmit();" class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs sm:text-sm">
+              🏆 Nộp bài ngay
+            </button>
+          `
+        );
+      } else {
+        executeFinalSubmit();
+      }
+    };
+
+    window.executeFinalSubmit = async function () {
+      const result = evaluateSubmission();
+      state.submittedResult = result;
+
+      // Save to Firestore
+      const synced = await saveSubmissionToCloud(result);
+
+      // Switch UI to Result View
+      document.getElementById("student-arena").classList.add("hidden");
+      document.getElementById("student-result-view").classList.remove("hidden");
+
+      // Populate Hero Score
+      let rankTitle = "🌱 TÂN BINH HANGUL TIỀM NĂNG";
+      if (result.score10 >= 9.0) rankTitle = "👑 CHIẾN THẦN CHINH PHỤC HANGUL";
+      else if (result.score10 >= 7.5) rankTitle = "🔥 CAO THỦ PATCHIM & NỐI ÂM";
+      else if (result.score10 >= 5.0) rankTitle = "⭐ CHIẾN BINH VƯỢT TRẠM";
+
+      document.getElementById("res-badge-title").textContent = rankTitle;
+      document.getElementById("res-student-meta").textContent =
+        `${result.studentName} • Lớp ${result.className} • Ngày ${formatDateVN(result.examDate)}`;
+      document.getElementById("res-score-10").textContent = result.score10.toFixed(1);
+      document.getElementById("res-raw-count").textContent = `Đúng ${result.totalCorrect} / ${result.totalQuestions} câu`;
+
+      const syncEl = document.getElementById("res-sync-status");
+      if (synced) {
+        syncEl.innerHTML = `<span>✅</span> <span>Đã gửi điểm lên Google Sheets & Bảng Điểm Giáo Viên thành công!</span>`;
+      } else {
+        syncEl.innerHTML = `<span>⚠️</span> <span>Chưa kết nối Google Sheets (hoặc mất mạng) - Đã lưu tạm trên máy!</span>`;
+      }
+
+      // Render 6-round breakdown cards
+      const grid = document.getElementById("res-rounds-grid");
+      grid.innerHTML = Object.values(result.roundScores)
+        .map((r) => {
+          const pct = Math.round((r.correct / r.total) * 100);
+          return `
+            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="font-extrabold text-xs sm:text-sm text-slate-800">${r.label}</span>
+                <span class="font-black text-sm text-indigo-600">${r.correct}/${r.total}</span>
+              </div>
+              <div class="w-full h-2 bg-slate-200 rounded-full overflow-hidden">
+                <div class="h-full bg-indigo-600 rounded-full" style="width: ${pct}%"></div>
+              </div>
+            </div>
+          `;
+        })
+        .join("");
+
+      // Pre-render detailed answer key review
+      renderDetailedReview(result.itemBreakdown);
+      document.getElementById("detailed-review-container").classList.add("hidden");
+
+      // Fire celebration confetti if score >= 5
+      if (result.score10 >= 5 && typeof confetti === "function") {
+        confetti({ particleCount: 90, spread: 70, origin: { y: 0.6 } });
+      }
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+
+    function renderDetailedReview(breakdown) {
+      const container = document.getElementById("detailed-review-container");
+      container.innerHTML = `
+        <div class="bg-white rounded-3xl p-5 sm:p-6 shadow-md border border-indigo-100 space-y-4">
+          <h3 class="font-black text-lg text-slate-800 flex items-center gap-2">
+            <span>📖</span> Bảng Đáp Án & Giải Thích Chi Tiết (65 Câu)
+          </h3>
+          <div class="space-y-3">
+            ${breakdown
+              .map(
+                (item) => `
+              <div class="p-4 rounded-2xl border-2 ${
+                item.isCorrect ? "bg-emerald-50/50 border-emerald-200" : "bg-rose-50/50 border-rose-200"
+              } space-y-1.5">
+                <div class="flex items-center justify-between gap-2">
+                  <span class="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold ${
+                    item.isCorrect ? "bg-emerald-600 text-white" : "bg-rose-600 text-white"
+                  }">
+                    ${item.round} • ${item.isCorrect ? "ĐÚNG ✔" : "SAI ✘"}
+                  </span>
+                </div>
+                <p class="font-extrabold text-slate-900 text-sm sm:text-base kr-text">${item.prompt}</p>
+                <div class="text-xs sm:text-sm flex flex-wrap gap-x-4 gap-y-1">
+                  <span class="${item.isCorrect ? "text-emerald-700 font-bold" : "text-rose-700 font-bold"}">
+                    Bạn chọn: <span class="kr-text">${item.userAnswerText}</span>
+                  </span>
+                  ${
+                    !item.isCorrect
+                      ? `<span class="text-emerald-700 font-extrabold">Đáp án đúng: <span class="kr-text">${item.correctAnswerText}</span></span>`
+                      : ""
+                  }
+                </div>
+                <p class="text-xs text-slate-600 italic">💡 ${item.explain}</p>
+              </div>
+            `
+              )
+              .join("")}
+          </div>
+        </div>
+      `;
+    }
+
+    window.toggleDetailedReview = function () {
+      const el = document.getElementById("detailed-review-container");
+      el.classList.toggle("hidden");
+      if (!el.classList.contains("hidden")) {
+        el.scrollIntoView({ behavior: "smooth" });
+      }
+    };
+
+    window.resetForNewAttempt = function () {
+      document.getElementById("student-result-view").classList.add("hidden");
+      document.getElementById("student-arena").classList.add("hidden");
+      document.getElementById("student-register-card").classList.remove("hidden");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+
+    // ==================== 8. TEACHER DASHBOARD LOGIC ====================
+    window.unlockTeacherDashboard = function (e) {
+      e.preventDefault();
+      const input = document.getElementById("teacher-pin-input").value.trim();
+      const errEl = document.getElementById("teacher-pin-error");
+      const activePin = (state.teacherPin || "3002").trim();
+
+      if (input === activePin || input === "3002") {
+        state.teacherUnlocked = true;
+        errEl.classList.add("hidden");
+        document.getElementById("teacher-pin-gate").classList.add("hidden");
+        document.getElementById("teacher-dashboard-content").classList.remove("hidden");
+        renderTeacherDashboard();
+      } else {
+        errEl.classList.remove("hidden");
+      }
+    };
+
+    window.lockTeacherDashboard = function () {
+      state.teacherUnlocked = false;
+      document.getElementById("teacher-pin-input").value = "";
+      document.getElementById("teacher-dashboard-content").classList.add("hidden");
+      document.getElementById("teacher-pin-gate").classList.remove("hidden");
+    };
+
+    window.openChangePinModal = function () {
+      openModal(
+        "🔑 Đổi Mã PIN Khu Vực Giáo Viên",
+        `
+        <form id="change-pin-form" onsubmit="saveNewTeacherPin(event)" class="space-y-4">
+          <p class="text-xs sm:text-sm text-slate-600">
+            Nhập mã PIN mới (từ <b>4 đến 8 ký tự</b>) để bảo mật Bảng Điểm Giáo Viên. Mã PIN mới sẽ được lưu và đồng bộ trên tất cả thiết bị của bạn.
+          </p>
+          <div>
+            <label class="block text-xs font-extrabold uppercase tracking-wider text-slate-600 mb-1">Mã PIN mới</label>
+            <input type="password" id="new-pin-input" minlength="4" maxlength="8" required placeholder="Nhập mã PIN mới (4-8 ký tự)"
+              class="w-full px-4 py-3 rounded-2xl border-2 border-slate-200 focus:border-indigo-500 outline-none font-black text-center tracking-[0.3em] text-lg" />
+          </div>
+          <div>
+            <label class="block text-xs font-extrabold uppercase tracking-wider text-slate-600 mb-1">Xác nhận mã PIN mới</label>
+            <input type="password" id="confirm-pin-input" minlength="4" maxlength="8" required placeholder="Nhập lại mã PIN mới"
+              class="w-full px-4 py-3 rounded-2xl border-2 border-slate-200 focus:border-indigo-500 outline-none font-black text-center tracking-[0.3em] text-lg" />
+          </div>
+          <p id="change-pin-msg" class="text-xs font-bold text-rose-500 hidden"></p>
+        </form>
+        `,
+        `
+          <button type="button" onclick="closeModal()" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold text-xs sm:text-sm">
+            Hủy
+          </button>
+          <button type="submit" form="change-pin-form" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold text-xs sm:text-sm">
+            💾 Lưu mã PIN mới
+          </button>
+        `
+      );
+    };
+
+    window.saveNewTeacherPin = async function (e) {
+      e.preventDefault();
+      const newPin = document.getElementById("new-pin-input").value.trim();
+      const confirmPin = document.getElementById("confirm-pin-input").value.trim();
+      const msgEl = document.getElementById("change-pin-msg");
+
+      if (newPin.length < 4 || newPin.length > 8) {
+        msgEl.textContent = "❌ Mã PIN phải có độ dài từ 4 đến 8 ký tự.";
+        msgEl.classList.remove("hidden");
+        return;
+      }
+      if (newPin !== confirmPin) {
+        msgEl.textContent = "❌ Hai ô mã PIN chưa khớp nhau! Vui lòng kiểm tra lại.";
+        msgEl.classList.remove("hidden");
+        return;
+      }
+
+      state.teacherPin = newPin;
+      state.pinVersion = 3;
+
+      try {
+        localStorage.setItem(LOCAL_PIN_KEY, newPin);
+      } catch (err) {
+        console.error("Failed to save PIN locally:", err);
+      }
+
+      openModal(
+        "✅ Đổi Mã PIN Thành Công!",
+        `<p class="text-slate-700">Mã PIN Khu Vực Giáo Viên đã được cập nhật thành công. Hãy ghi nhớ mã PIN mới của bạn cho lần đăng nhập tiếp theo nhé!</p>`,
+        `<button onclick="closeModal()" class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs sm:text-sm">Đóng</button>`
+      );
+    };
+
+    function updateTeacherBadge() {
+      const badge = document.getElementById("teacher-badge-count");
+      if (badge) badge.textContent = state.submissions.length;
+    }
+
+    function renderTeacherDashboard() {
+      // Populate Class Filter Options
+      const classSelect = document.getElementById("teacher-filter-class");
+      const currentSelectedClass = classSelect.value;
+      const uniqueClasses = Array.from(
+        new Set(state.submissions.map((s) => (s.className || "").trim()).filter(Boolean))
+      ).sort();
+
+      classSelect.innerHTML =
+        `<option value="ALL">🏫 Tất cả các lớp (${state.submissions.length})</option>` +
+        uniqueClasses.map((cls) => `<option value="${cls}">Lớp ${cls}</option>`).join("");
+
+      if (uniqueClasses.includes(currentSelectedClass)) {
+        classSelect.value = currentSelectedClass;
+      }
+
+      renderTeacherTable();
+    }
+
+    window.renderTeacherTable = function () {
+      const searchQuery = document.getElementById("teacher-search").value.trim().toLowerCase();
+      const classFilter = document.getElementById("teacher-filter-class").value;
+      const sortBy = document.getElementById("teacher-sort").value;
+
+      let filtered = state.submissions.filter((sub) => {
+        const matchName = (sub.studentName || "").toLowerCase().includes(searchQuery);
+        const matchClass = classFilter === "ALL" || (sub.className || "").trim() === classFilter;
+        return matchName && matchClass;
+      });
+
+      if (sortBy === "highest") {
+        filtered.sort((a, b) => (b.score10 || 0) - (a.score10 || 0));
+      } else if (sortBy === "lowest") {
+        filtered.sort((a, b) => (a.score10 || 0) - (b.score10 || 0));
+      } else {
+        filtered.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+      }
+
+      // Compute KPI stats on filtered set
+      const total = filtered.length;
+      const avg = total > 0 ? filtered.reduce((acc, s) => acc + (s.score10 || 0), 0) / total : 0;
+      const max = total > 0 ? Math.max(...filtered.map((s) => s.score10 || 0)) : 0;
+      const passCount = filtered.filter((s) => (s.score10 || 0) >= 5.0).length;
+      const passRate = total > 0 ? Math.round((passCount / total) * 100) : 0;
+
+      document.getElementById("stat-total").textContent = total;
+      document.getElementById("stat-avg").textContent = avg.toFixed(1);
+      document.getElementById("stat-max").textContent = max.toFixed(1);
+      document.getElementById("stat-pass").textContent = `${passRate}%`;
+
+      const tbody = document.getElementById("teacher-table-body");
+      const emptyState = document.getElementById("teacher-empty-state");
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = "";
+        emptyState.classList.remove("hidden");
+        return;
+      }
+
+      emptyState.classList.add("hidden");
+      tbody.innerHTML = filtered
+        .map((sub, idx) => {
+          const score = Number(sub.score10 || 0);
+          let scoreBadge = "bg-rose-100 text-rose-700";
+          if (score >= 8.5) scoreBadge = "bg-emerald-100 text-emerald-700";
+          else if (score >= 6.5) scoreBadge = "bg-indigo-100 text-indigo-700";
+          else if (score >= 5.0) scoreBadge = "bg-amber-100 text-amber-800";
+
+          const rs = sub.roundScores || {};
+          const miniRounds = [
+            `V1:${rs.r1?.correct ?? "-"}/10`,
+            `V2:${rs.r2?.correct ?? "-"}/10`,
+            `V3:${rs.r3?.correct ?? "-"}/10`,
+            `V4:${rs.r4?.correct ?? "-"}/10`,
+            `V5:${rs.r5?.correct ?? "-"}/10`,
+            `V6:${rs.r6?.correct ?? "-"}/15`
+          ].join(" • ");
+
+          return `
+            <tr class="hover:bg-indigo-50/40 transition-colors">
+              <td class="py-3.5 px-4 font-bold text-slate-400">${idx + 1}</td>
+              <td class="py-3.5 px-4 font-extrabold text-slate-900">${escapeHTML(sub.studentName || "Ẩn danh")}</td>
+              <td class="py-3.5 px-4">
+                <span class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-extrabold">
+                  ${escapeHTML(sub.className || "-")}
+                </span>
+              </td>
+              <td class="py-3.5 px-4 text-xs text-slate-500 font-medium">${escapeHTML(sub.submittedAtDisplay || "-")}</td>
+              <td class="py-3.5 px-4 text-center">
+                <span class="px-3 py-1 rounded-xl font-black text-sm ${scoreBadge}">
+                  ${score.toFixed(1)}
+                </span>
+              </td>
+              <td class="py-3.5 px-4 text-center font-extrabold text-slate-700">
+                ${sub.totalCorrect ?? 0} / ${sub.totalQuestions ?? 65}
+              </td>
+              <td class="py-3.5 px-4 hidden md:table-cell text-[11px] font-bold text-slate-500">
+                ${miniRounds}
+              </td>
+              <td class="py-3.5 px-4 text-right space-x-1">
+                <button onclick="inspectStudentSubmission('${sub.id}')"
+                  class="px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-extrabold shadow-sm">
+                  👁️ Chi tiết
+                </button>
+                <button onclick="confirmDeleteSubmission('${sub.id}')"
+                  class="px-2.5 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 text-xs font-extrabold">
+                  🗑️
+                </button>
+              </td>
+            </tr>
+          `;
+        })
+        .join("");
+    };
+
+    window.inspectStudentSubmission = function (subId) {
+      const sub = state.submissions.find((s) => s.id === subId);
+      if (!sub) return;
+
+      const breakdown = sub.itemBreakdown || [];
+      const rs = sub.roundScores || {};
+
+      const roundsSummaryHTML = Object.values(rs)
+        .map(
+          (r) => `
+          <div class="px-3 py-2 rounded-xl bg-indigo-50 border border-indigo-100 text-xs font-extrabold text-indigo-900 flex justify-between">
+            <span>${r.label}</span>
+            <span>${r.correct}/${r.total}</span>
+          </div>
+        `
+        )
+        .join("");
+
+      const detailItemsHTML =
+        breakdown.length > 0
+          ? breakdown
+              .map(
+                (item) => `
+              <div class="p-3 rounded-xl border ${
+                item.isCorrect ? "bg-emerald-50/50 border-emerald-200" : "bg-rose-50/60 border-rose-200"
+              } text-xs space-y-1">
+                <div class="flex justify-between font-extrabold">
+                  <span class="text-slate-500">${item.round}</span>
+                  <span class="${item.isCorrect ? "text-emerald-700" : "text-rose-700"}">
+                    ${item.isCorrect ? "ĐÚNG ✔" : "SAI ✘"}
+                  </span>
+                </div>
+                <p class="font-bold text-slate-900 kr-text">${item.prompt}</p>
+                <p class="text-slate-700">
+                  Học viên chọn: <b class="kr-text">${item.userAnswerText}</b>
+                  ${!item.isCorrect ? ` | Đáp án đúng: <b class="text-emerald-700 kr-text">${item.correctAnswerText}</b>` : ""}
+                </p>
+              </div>
+            `
+              )
+              .join("")
+          : `<p class="text-slate-500 italic">Không có dữ liệu chi tiết từng câu cho bản ghi này.</p>`;
+
+      openModal(
+        `📋 Bài làm của: ${escapeHTML(sub.studentName)} (Lớp ${escapeHTML(sub.className)})`,
+        `
+          <div class="bg-gradient-to-r from-indigo-600 to-violet-600 text-white p-4 rounded-2xl flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <p class="text-xs text-indigo-100">Thời gian nộp: ${escapeHTML(sub.submittedAtDisplay || "")}</p>
+              <p class="font-black text-lg mt-0.5">Điểm tổng kết: ${Number(sub.score10 || 0).toFixed(2)} / 10 (${sub.totalCorrect}/${sub.totalQuestions} câu)</p>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            ${roundsSummaryHTML}
+          </div>
+          <div class="space-y-2 pt-2">
+            <h4 class="font-extrabold text-slate-800">Chi tiết từng câu trả lời:</h4>
+            ${detailItemsHTML}
+          </div>
+        `,
+        `<button onclick="closeModal()" class="px-5 py-2.5 rounded-xl bg-indigo-600 text-white font-extrabold text-xs sm:text-sm">Đóng</button>`
+      );
+    };
+
+    window.confirmDeleteSubmission = function (subId) {
+      openModal(
+        "🗑️ Xóa bài nộp này?",
+        `<p class="text-slate-700">Bạn có chắc chắn muốn xóa kết quả bài làm này khỏi Bảng Điểm Giáo Viên không?</p>`,
+        `
+          <button onclick="closeModal()" class="px-4 py-2 rounded-xl bg-slate-100 text-slate-700 font-bold text-xs sm:text-sm">Hủy</button>
+          <button onclick="closeModal(); deleteSubmission('${subId}');" class="px-4 py-2 rounded-xl bg-rose-600 text-white font-extrabold text-xs sm:text-sm">Xóa vĩnh viễn</button>
+        `
+      );
+    };
+
+    window.deleteSubmission = async function (subId) {
+      state.submissions = state.submissions.filter((s) => s.id !== subId);
+      updateTeacherBadge();
+      renderTeacherDashboard();
+
+      if (isGoogleSheetConfigured() && !String(subId).startsWith("local_")) {
+        try {
+          await fetch(GOOGLE_SCRIPT_URL, {
+            method: "POST",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify({ action: "delete", id: subId })
+          });
+        } catch (err) {
+          console.error("Lỗi xóa trên Google Sheets:", err);
+        }
+      }
+    };
+
+    window.exportSubmissionsCSV = function () {
+      if (state.submissions.length === 0) {
+        openModal(
+          "📭 Chưa có dữ liệu",
+          `<p class="text-slate-600">Hiện chưa có bài nộp nào của học viên để xuất file Excel (CSV).</p>`,
+          `<button onclick="closeModal()" class="px-4 py-2 rounded-xl bg-indigo-600 text-white font-bold text-xs">Đóng</button>`
+        );
+        return;
+      }
+
+      const headers = [
+        "STT",
+        "Họ và tên",
+        "Lớp",
+        "Ngày làm bài",
+        "Thời gian nộp",
+        "Điểm (/10)",
+        "Số câu đúng (/65)",
+        "Vòng 1 (/10)",
+        "Vòng 2 (/10)",
+        "Vòng 3 (/10)",
+        "Vòng 4 (/10)",
+        "Vòng 5 (/10)",
+        "Vòng 6 (/15)"
+      ];
+
+      const rows = state.submissions.map((s, idx) => {
+        const rs = s.roundScores || {};
+        return [
+          idx + 1,
+          `"${(s.studentName || "").replace(/"/g, '""')}"`,
+          `"${(s.className || "").replace(/"/g, '""')}"`,
+          `"${s.examDate || ""}"`,
+          `"${s.submittedAtDisplay || ""}"`,
+          Number(s.score10 || 0).toFixed(2),
+          s.totalCorrect ?? 0,
+          rs.r1?.correct ?? 0,
+          rs.r2?.correct ?? 0,
+          rs.r3?.correct ?? 0,
+          rs.r4?.correct ?? 0,
+          rs.r5?.correct ?? 0,
+          rs.r6?.correct ?? 0
+        ].join(",");
+      });
+
+      const csvContent = "\uFEFF" + [headers.join(","), ...rows].join("\n");
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `Bang_Diem_Chinh_Phuc_Hangul_${new Date().toISOString().slice(0, 10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    };
+
+    // ==================== 9. MODAL & UTILITY HELPERS ====================
+    window.openModal = function (title, bodyHTML, footerHTML) {
+      document.getElementById("modal-title").innerHTML = title;
+      document.getElementById("modal-body").innerHTML = bodyHTML;
+      document.getElementById("modal-footer").innerHTML = footerHTML || "";
+      const modal = document.getElementById("custom-modal");
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+    };
+
+    window.closeModal = function () {
+      const modal = document.getElementById("custom-modal");
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+    };
+
+    function escapeHTML(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    // ==================== 10. INITIALIZATION ====================
+    window.addEventListener("DOMContentLoaded", () => {
+      // Pre-fill today's date
+      const todayISO = new Date().toISOString().split("T")[0];
+      const dateInput = document.getElementById("input-date");
+      if (dateInput) dateInput.value = todayISO;
+
+      fetchSubmissionsFromGoogleSheet();
+      setInterval(() => {
+        if (state.mode === "teacher" && state.teacherUnlocked) {
+          fetchSubmissionsFromGoogleSheet();
+        }
+      }, 20000);
+    });
+    window.fetchSubmissionsFromGoogleSheet = fetchSubmissionsFromGoogleSheet;
+  </script>
+</body>
+</html>
